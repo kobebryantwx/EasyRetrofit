@@ -65,8 +65,11 @@ public class HttpDownManager {
      * 开始下载
      */
     public void startDown(final DownInfo info) {
+        if (info == null) {
+            return;
+        }
         /*正在下载不处理*/
-        if (info == null || subMap.get(info.getUrl()) != null) {
+        if (subMap.get(info.getUrl()) != null) {
             subMap.get(info.getUrl()).setDownInfo(info);
             return;
         }
@@ -122,7 +125,6 @@ public class HttpDownManager {
 
     }
 
-
     /**
      * 停止下载
      */
@@ -148,7 +150,7 @@ public class HttpDownManager {
     public void pause(DownInfo info) {
         if (info == null) return;
         info.setState(DownState.PAUSE);
-        info.getListener().onPuase();
+        info.getListener().onPause();
         if (subMap.containsKey(info.getUrl())) {
             ProgressDownSubscriber subscriber = subMap.get(info.getUrl());
             subscriber.unsubscribe();

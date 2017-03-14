@@ -2,6 +2,7 @@ package com.kbryant.retrofit.rxjavaandretrofitdemo.activity;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,11 +10,12 @@ import android.widget.TextView;
 
 import com.kbryant.retrofit.rxjavaandretrofitdemo.R;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.download.HttpDownManager;
+import com.kbryant.retrofit.rxjavaandretrofitdemo.download.HttpDownOnNextListener;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.DownInfo;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.DownState;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.StudyPlace;
-import com.kbryant.retrofit.rxjavaandretrofitdemo.net.HttpOnNextListener;
-import com.kbryant.retrofit.rxjavaandretrofitdemo.net.NetManager;
+import com.kbryant.retrofit.rxjavaandretrofitdemo.http.HttpOnNextListener;
+import com.kbryant.retrofit.rxjavaandretrofitdemo.http.NetManager;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.utils.DbDownUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
@@ -27,7 +29,7 @@ public class MainActivity extends RxAppCompatActivity {
     private Button button;
     private HttpDownManager manager;
     private DbDownUtil dbUtil;
-    List<DownInfo> listData;
+    private List<DownInfo> listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MainActivity extends RxAppCompatActivity {
     }
 
     public void download() {
+        listData.get(0).setListener(downOnNextListener);
         manager.startDown(listData.get(0));
     }
 
@@ -70,6 +73,28 @@ public class MainActivity extends RxAppCompatActivity {
         }
     }
 
+    HttpDownOnNextListener<DownInfo> downOnNextListener = new HttpDownOnNextListener<DownInfo>() {
+
+        @Override
+        public void onNext(DownInfo downInfo) {
+
+        }
+
+        @Override
+        public void onStart() {
+
+        }
+
+        @Override
+        public void onComplete() {
+            Log.i("log", "onComplete");
+        }
+
+        @Override
+        public void updateProgress(long readLength, long countLength) {
+            Log.i("log", readLength + "***" + countLength);
+        }
+    };
     HttpOnNextListener<List<StudyPlace>> httpOnNextListener = new HttpOnNextListener<List<StudyPlace>>() {
 
         @Override
