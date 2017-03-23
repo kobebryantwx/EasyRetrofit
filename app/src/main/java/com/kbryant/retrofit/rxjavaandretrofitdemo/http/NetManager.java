@@ -9,8 +9,8 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 public class NetManager {
 
-    public static void getAllVideo(RxAppCompatActivity activity, String placeName, HttpOnNextListener simpleOnNextListener) {
+    public static void getWeather(RxAppCompatActivity activity, String placeName, HttpOnNextListener simpleOnNextListener) {
         BaseApi api = new BaseApi(activity, simpleOnNextListener);
-        HttpManager.getInstance().doHttpDeal(api.getApi(HttpInterfaces.class).getAllStation(placeName), api);
+        HttpManager.getInstance().doHttpDeal(api.getApi(HttpInterfaces.class).getWeather(placeName), api);
     }
 }

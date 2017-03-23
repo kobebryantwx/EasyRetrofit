@@ -6,42 +6,33 @@ package com.kbryant.retrofit.rxjavaandretrofitdemo.entity;
  */
 public class BaseHttpResult<T> {
     //  判断标示
-    private boolean success;
-    private int code;
-    //    提示信息
-    private String msg;
-    //显示数据（用户需要关心的数据）
-    private T data;
+    private int errNum;
+    // 提示信息
+    private String errMsg;
+    //数据
+    private T retData;
 
-    public String getMsg() {
-        return msg;
+    public String getErrMsg() {
+        return errMsg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
     }
 
-    public T getData() {
-        return data;
+    public int getErrNum() {
+        return errNum;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setErrNum(int errNum) {
+        this.errNum = errNum;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public T getRetData() {
+        return retData;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
+    public void setRetData(T retData) {
+        this.retData = retData;
     }
 }

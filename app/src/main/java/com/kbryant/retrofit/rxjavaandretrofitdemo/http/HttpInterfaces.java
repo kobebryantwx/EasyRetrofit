@@ -1,13 +1,15 @@
 package com.kbryant.retrofit.rxjavaandretrofitdemo.http;
 
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.BaseHttpResult;
-import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.StudyPlace;
+import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.Weather;
 
 import java.util.List;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -17,8 +19,7 @@ import rx.Observable;
 
 public interface HttpInterfaces {
 
-    @FormUrlEncoded
-    @POST("login/")
-    Observable<BaseHttpResult<List<StudyPlace>>> getAllStation(@Field("teachPlace") String placeName);
+    @GET("weather")
+    Observable<BaseHttpResult<Weather>> getWeather(@Query("cityname") String placeName);
 
 }

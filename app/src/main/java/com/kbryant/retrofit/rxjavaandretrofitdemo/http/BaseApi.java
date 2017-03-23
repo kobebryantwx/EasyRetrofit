@@ -36,7 +36,7 @@ public class BaseApi {
     /*是否需要缓存处理*/
     private boolean cache;
     /*基础url*/
-    private String baseUrl = "http://192.168.1.138:8088/mobiles/";
+    private String baseUrl = "http://apistore.baidu.com/microservice/";
     /*方法-如果需要缓存必须设置这个参数；不需要不用設置*/
     private String method;
     /*超时时间-默认6秒*/
@@ -68,13 +68,16 @@ public class BaseApi {
                 Response response = chain.proceed(request);
                 RequestBody requestBody = request.body();
                 Buffer buffer = new Buffer();
-                requestBody.writeTo(buffer);
-                Charset charset = Charset.forName("UTF-8");
-                MediaType contentType = requestBody.contentType();
-                if (contentType != null) {
-                    charset = contentType.charset(charset);
+                String paramsStr = request.url().encodedPath();
+                if (requestBody != null) {
+                    requestBody.writeTo(buffer);
+                    Charset charset = Charset.forName("UTF-8");
+                    MediaType contentType = requestBody.contentType();
+                    if (contentType != null) {
+                        charset = contentType.charset(charset);
+                    }
+                    paramsStr += buffer.readString(charset);
                 }
-                String paramsStr = buffer.readString(charset);
                 Log.i("response", paramsStr);
                 return response;
             }

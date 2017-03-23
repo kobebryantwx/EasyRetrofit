@@ -6,10 +6,13 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.MyApplication;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.CookieResult;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.exception.HttpResponseException;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.utils.AppUtil;
+import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.lang.ref.SoftReference;
@@ -214,7 +217,6 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
     @Override
     public void onNext(T t) {
         if (mSubscriberOnNextListener.get() != null) {
-            Log.i("result", t.toString());
             mSubscriberOnNextListener.get().onSuccess(t);
         }
     }

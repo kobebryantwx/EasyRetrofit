@@ -15,7 +15,7 @@ import org.greenrobot.greendao.annotation.Generated;
 
 @Entity
 public class DownInfo {
-    @Id
+    @Id(autoincrement = true)
     private long id;
     /*存储位置*/
     private String savePath;
@@ -32,25 +32,21 @@ public class DownInfo {
     /*超时设置*/
     private int connectionTime = 6;
     /*state状态数据库保存*/
-    private int state;
+    private int state = DownState.START.getState();
     /*url*/
     private String url;
+    /*文件名,包括后缀*/
+    private String name;
 
-    public DownInfo(String url, HttpDownOnNextListener listener) {
+    public DownInfo(String url, String name, HttpDownOnNextListener listener) {
         setUrl(url);
+        setName(name);
         setListener(listener);
     }
 
-    public DownInfo(String url) {
-        setUrl(url);
-    }
-
-    public DownInfo() {
-    }
-
-    @Generated(hash = 353131320)
+    @Generated(hash = 723014657)
     public DownInfo(long id, String savePath, long countLength, long readLength,
-                    int connectionTime, int state, String url) {
+                    int connectionTime, int state, String url, String name) {
         this.id = id;
         this.savePath = savePath;
         this.countLength = countLength;
@@ -58,8 +54,12 @@ public class DownInfo {
         this.connectionTime = connectionTime;
         this.state = state;
         this.url = url;
+        this.name = name;
     }
 
+    @Generated(hash = 928324469)
+    public DownInfo() {
+    }
 
     public DownState getDownState() {
         switch (getState()) {
@@ -82,6 +82,14 @@ public class DownInfo {
 
     public void setState(DownState downState) {
         this.state = downState.getState();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getState() {

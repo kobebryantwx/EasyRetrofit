@@ -1,6 +1,8 @@
 package com.kbryant.retrofit.rxjavaandretrofitdemo.download;
 
 
+import android.os.Environment;
+
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.DownInfo;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.DownState;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.exception.HttpResponseException;
@@ -37,6 +39,8 @@ public class HttpDownManager {
     private volatile static HttpDownManager INSTANCE;
     /*数据库类*/
     private DbDownUtil db;
+    //默认下载地址
+    private String downloadPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
     private HttpDownManager() {
         downInfos = new HashSet<>();
@@ -68,6 +72,10 @@ public class HttpDownManager {
         if (info == null) {
             return;
         }
+        if (info.getCountLength() == info.getReadLength()) {
+            info.setReadLength(0);
+            info.setState(DownState.START);
+        }
         /*正在下载不处理*/
         if (subMap.get(info.getUrl()) != null) {
             subMap.get(info.getUrl()).setDownInfo(info);
@@ -87,7 +95,6 @@ public class HttpDownManager {
             //手动创建一个OkHttpClient并设置超时时间
             builder.connectTimeout(info.getConnectionTime(), TimeUnit.SECONDS);
             builder.addInterceptor(interceptor);
-
             Retrofit retrofit = new Retrofit.Builder()
                     .client(builder.build())
                     .addConverterFactory(GsonConverterFactory.create())
@@ -110,7 +117,13 @@ public class HttpDownManager {
                     @Override
                     public DownInfo call(ResponseBody responseBody) {
                         try {
-                            AppUtil.writeCache(responseBody, new File(info.getSavePath()), info);
+                            String path = info.getSavePath();
+                            if (path == null || path.isEmpty()) {
+                                path = downloadPath;
+                                info.setSavePath(path);
+                            }
+                            path += info.getName();
+                            AppUtil.writeCache(responseBody, new File(path), info);
                         } catch (IOException e) {
                             /*失败抛出异常*/
                             throw new HttpResponseException(e.getMessage());
@@ -122,7 +135,6 @@ public class HttpDownManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 /*数据回调*/
                 .subscribe(subscriber);
-
     }
 
     /**

@@ -1,8 +1,11 @@
 package com.kbryant.retrofit.rxjavaandretrofitdemo.http;
 
+import com.google.gson.Gson;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.entity.BaseHttpResult;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.exception.HttpResponseException;
 import com.kbryant.retrofit.rxjavaandretrofitdemo.exception.RetryWhenNetworkException;
+import com.orhanobut.logger.Logger;
+import com.trello.rxlifecycle.android.ActivityEvent;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,8 +47,8 @@ public class HttpManager {
                 /*失败后的retry配置*/
                 .retryWhen(new RetryWhenNetworkException())
                 /*生命周期管理*/
-//                .compose(baseApi.getRxAppCompatActivity().bindToLifecycle())
-//                .compose(baseApi.getRxAppCompatActivity().bindUntilEvent(ActivityEvent.DESTROY))
+                .compose(baseApi.getRxAppCompatActivity().bindToLifecycle())
+                .compose(baseApi.getRxAppCompatActivity().bindUntilEvent(ActivityEvent.DESTROY))
                 /*http请求线程*/
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -65,10 +68,11 @@ public class HttpManager {
 
         @Override
         public T call(BaseHttpResult<T> httpResult) {
-            if (!httpResult.isSuccess()) {
-                throw new HttpResponseException(httpResult.getMsg());
+            if (httpResult.getErrNum() != 0) {
+                throw new HttpResponseException(httpResult.getErrMsg());
             }
-            return httpResult.getData();
+            Logger.json(new Gson().toJson(httpResult.getRetData()));
+            return httpResult.getRetData();
         }
     }
 }

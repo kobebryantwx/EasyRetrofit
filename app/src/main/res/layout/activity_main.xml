@@ -11,20 +11,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.kbryant.retrofit.rxjavaandretrofitdemo.activity.MainActivity">
 
-    <EditText
-        android:id="@+id/et_place_name"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:max="100"
+        android:progress="0" />
 
     <Button
         android:id="@+id/btn_sure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="确定" />
+        android:text="下载" />
 
     <TextView
         android:id="@+id/tv_show_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_marginTop="10dp"
+        android:text="" />
+
+
 </LinearLayout>
