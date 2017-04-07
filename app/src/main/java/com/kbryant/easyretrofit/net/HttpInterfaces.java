@@ -1,6 +1,7 @@
-package com.kbryant.easyretrofit;
+package com.kbryant.easyretrofit.net;
 
 
+import com.kbryant.easyretrofit.Weather;
 import com.kbryant.retrofit.easyretrofit.entity.BaseHttpResult;
 
 import retrofit2.http.GET;

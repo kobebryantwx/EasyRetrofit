@@ -1,10 +1,8 @@
 package com.kbryant.retrofit.easyretrofit.http;
 
-import com.google.gson.Gson;
 import com.kbryant.retrofit.easyretrofit.entity.BaseHttpResult;
 import com.kbryant.retrofit.easyretrofit.exception.HttpResponseException;
 import com.kbryant.retrofit.easyretrofit.exception.RetryWhenNetworkException;
-import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
@@ -95,7 +93,7 @@ public final class HttpManager {
             if (httpResult.getErrNum() != 0) {
                 throw new HttpResponseException(httpResult.getErrMsg());
             }
-            Logger.json(new Gson().toJson(httpResult.getRetData()));
+//            Log.i("retrofit",new Gson().toJson(httpResult.getRetData()));
             return httpResult.getRetData();
         }
     }

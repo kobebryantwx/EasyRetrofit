@@ -16,13 +16,13 @@ import java.util.List;
 
 /**
  * 断点续传
- * 数据库工具类-geendao运用
+ * 数据库工具类-greendao运用
  * Created by WX on 2016/10/25.
  */
 
 public class DbDownUtil {
     private static DbDownUtil db;
-    private final static String dbName = "tests_db";
+    private final static String dbName = "easy_retrofit_db";
     private DaoMaster.DevOpenHelper openHelper;
     private Context context;
 

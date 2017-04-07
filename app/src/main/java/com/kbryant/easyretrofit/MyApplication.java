@@ -19,7 +19,7 @@ public class MyApplication extends RetrofitApplication {
         application = this;
         //初始化log TAG
         Logger.init("log").hideThreadInfo();
-        HttpManager.getApiSetting().setShowProgress(true);
+        HttpManager.getApiSetting().setBaseUrl("http://apistore.baidu.com/microservice/");
     }
 
     public static Context getContext() {

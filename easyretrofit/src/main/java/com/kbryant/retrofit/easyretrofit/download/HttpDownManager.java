@@ -153,6 +153,15 @@ public class HttpDownManager {
         db.save(info);
     }
 
+    /**
+     * 是否正在下载
+     *
+     * @param info
+     * @return
+     */
+    public boolean isDownloading(DownInfo info) {
+        return info != null && info.getDownState() == DownState.DOWN;
+    }
 
     /**
      * 暂停下载

@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kbryant.easyretrofit.NetManager;
+import com.kbryant.easyretrofit.net.NetManager;
 import com.kbryant.easyretrofit.R;
 import com.kbryant.easyretrofit.Weather;
 import com.kbryant.retrofit.easyretrofit.download.HttpDownManager;
@@ -40,7 +40,7 @@ public class MainActivity extends RxAppCompatActivity {
             @Override
             public void onClick(View v) {
                 getData();
-//                download();
+                download();
             }
         });
         manager = HttpDownManager.getInstance();
@@ -59,9 +59,16 @@ public class MainActivity extends RxAppCompatActivity {
      * 下载
      */
     public void download() {
-        manager.startDown(listData.get(0));
+        if (manager.isDownloading(listData.get(0))) {
+            manager.pause(listData.get(0));
+        } else {
+            manager.startDown(listData.get(0));
+        }
     }
 
+    /**
+     * 初始化下载
+     */
     public void initDownload() {
         listData = dbUtil.queryDownAll();
         DownInfo downInfo;
@@ -81,6 +88,11 @@ public class MainActivity extends RxAppCompatActivity {
         setText(progress);
     }
 
+    /**
+     * 设置progressBar
+     *
+     * @param progress 进度
+     */
     public void setText(int progress) {
         progressBar.setProgress(progress);
         if (progress == 0) {
@@ -125,6 +137,10 @@ public class MainActivity extends RxAppCompatActivity {
     };
 
     HttpOnNextListener<Weather> httpOnNextListener = new HttpOnNextListener<Weather>() {
+        @Override
+        public void onStart() {
+            super.onStart();
+        }
 
         @Override
         public void onSuccess(Weather weather) {

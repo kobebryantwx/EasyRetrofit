@@ -1,4 +1,4 @@
-package com.kbryant.easyretrofit;
+package com.kbryant.easyretrofit.net;
 
 
 import com.kbryant.retrofit.easyretrofit.http.HttpManager;

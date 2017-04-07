@@ -16,14 +16,14 @@ import java.util.List;
 
 /**
  * 数据缓存
- * 数据库工具类-geendao运用
+ * 数据库工具类-greendao运用
  * Created by WX on 2016/11/5.
  */
 
 public class CookieDbUtil {
 
     private static CookieDbUtil db;
-    private final static String dbName = "test_db";
+    private final static String dbName = "easy_retrofit_db";
     private DaoMaster.DevOpenHelper openHelper;
     private Context context;
 
