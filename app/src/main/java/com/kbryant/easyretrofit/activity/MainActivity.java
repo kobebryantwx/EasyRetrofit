@@ -13,6 +13,7 @@ import com.kbryant.easyretrofit.BJTime;
 import com.kbryant.easyretrofit.net.NetManager;
 import com.kbryant.retrofit.easyretrofit.download.HttpDownManager;
 import com.kbryant.retrofit.easyretrofit.download.HttpDownOnNextListener;
+import com.kbryant.retrofit.easyretrofit.entity.BaseHttpResult;
 import com.kbryant.retrofit.easyretrofit.entity.DownInfo;
 import com.kbryant.retrofit.easyretrofit.http.HttpOnNextListener;
 import com.kbryant.retrofit.easyretrofit.utils.DbDownUtil;
@@ -145,7 +146,7 @@ public class MainActivity extends RxAppCompatActivity {
 
         @Override
         public void onSuccess(BJTime time) {
-            textView.setText(time.getDatetime_2());
+            textView.setText(time.getDatetime_1());
         }
 
         @Override

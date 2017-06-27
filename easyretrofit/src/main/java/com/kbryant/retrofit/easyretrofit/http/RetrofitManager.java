@@ -55,8 +55,14 @@ public class RetrofitManager {
                     .addInterceptor(CachingControlInterceptor.REWRITE_RESPONSE_INTERCEPTOR_OFFLINE)
                     .cache(cache);
         }
-        /*创建retrofit对象*/
-        return new Retrofit.Builder()
+        /*创建retrofit builder对象*/
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+        if (apiSetting.getConvertFactory() == null) {
+            retrofitBuilder.addConverterFactory(GsonConverterFactory.create());
+        } else {
+            retrofitBuilder.addConverterFactory(apiSetting.getConvertFactory());
+        }
+        return retrofitBuilder
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

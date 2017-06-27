@@ -5,7 +5,6 @@ import com.kbryant.easyretrofit.BJTime;
 import com.kbryant.retrofit.easyretrofit.entity.BaseHttpResult;
 
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Url;
 import rx.Observable;
 

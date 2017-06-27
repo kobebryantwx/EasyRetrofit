@@ -14,11 +14,11 @@ import rx.functions.Func2;
  * Created by WX on 2016/10/17.
  */
 public class RetryWhenNetworkException implements Func1<Observable<? extends Throwable>, Observable<?>> {
-//    retry次数
+    //重试次数
     private int count = 3;
-//    延迟
+    //延迟
     private long delay = 1000;
-//    叠加延迟
+    //叠加延迟
     private long increaseDelay = 3000;
 
     public RetryWhenNetworkException() {
@@ -52,7 +52,6 @@ public class RetryWhenNetworkException implements Func1<Observable<? extends Thr
                                 || wrapper.throwable instanceof TimeoutException)
                                 && wrapper.index < count + 1) { //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
                             return Observable.timer(delay + (wrapper.index - 1) * increaseDelay, TimeUnit.MILLISECONDS);
-
                         }
                         return Observable.error(wrapper.throwable);
                     }

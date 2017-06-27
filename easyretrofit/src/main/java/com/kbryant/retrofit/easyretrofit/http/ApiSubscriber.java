@@ -3,13 +3,17 @@ package com.kbryant.retrofit.easyretrofit.http;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ParseException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.JsonParseException;
 import com.kbryant.retrofit.easyretrofit.entity.CookieResult;
 import com.kbryant.retrofit.easyretrofit.exception.HttpResponseException;
 import com.kbryant.retrofit.easyretrofit.utils.AppUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+
+import org.json.JSONException;
 
 import java.lang.ref.SoftReference;
 import java.net.ConnectException;
@@ -23,7 +27,7 @@ import rx.Subscriber;
  * 在Http请求结束时，关闭ProgressDialog
  * Created by WX on 2016/7/16.
  */
-public class ProgressSubscriber<T> extends Subscriber<T> {
+public class ApiSubscriber<T> extends Subscriber<T> {
     /*是否弹框*/
     private boolean showProgress = true;
     /* 软引用回调接口*/
@@ -42,7 +46,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
      * @param activity
      * @param listener
      */
-    public ProgressSubscriber(RxAppCompatActivity activity, ApiSetting api, HttpOnNextListener listener) {
+    public ApiSubscriber(RxAppCompatActivity activity, ApiSetting api, HttpOnNextListener listener) {
         this.api = api;
         this.mSubscriberOnNextListener = new SoftReference<>(listener);
         this.mActivity = new SoftReference<>(activity);
@@ -53,14 +57,15 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
      * 构造
      *
      * @param activity
-     * @param simpleOnNextListener
+     * @param listener
      */
-    public ProgressSubscriber(RxAppCompatActivity activity, HttpOnNextListener simpleOnNextListener) {
-        this.mSubscriberOnNextListener = new SoftReference<>(simpleOnNextListener);
-        this.mActivity = new SoftReference<>(activity);
-        init();
+    public ApiSubscriber(RxAppCompatActivity activity, HttpOnNextListener listener) {
+        this(activity, new ApiSetting(), listener);
     }
 
+    /**
+     * 初始化加载框显示
+     */
     private void init() {
         setShowProgress(api.isShowProgress());
         if (api.isShowProgress()) {
@@ -142,18 +147,22 @@ public class ProgressSubscriber<T> extends Subscriber<T> {
     @Override
     public void onError(Throwable e) {
         dismissProgressDialog();
-        Log.i("error", e.getMessage());
-        errorDo(e);
+//        Log.i("error", e.getMessage());
+        doError(e);
     }
 
     /*错误统一处理*/
-    private void errorDo(Throwable e) {
+    private void doError(Throwable e) {
         Context context = mActivity.get();
         if (context == null) return;
         if (e instanceof SocketTimeoutException) {
             Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
         } else if (e instanceof ConnectException) {
             Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+        } else if (e instanceof JsonParseException
+                || e instanceof JSONException
+                || e instanceof ParseException) {
+            Toast.makeText(context, "数据异常，解析数据失败", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "错误" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }

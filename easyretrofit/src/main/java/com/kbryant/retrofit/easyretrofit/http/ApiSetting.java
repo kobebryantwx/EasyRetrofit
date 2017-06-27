@@ -2,6 +2,9 @@ package com.kbryant.retrofit.easyretrofit.http;
 
 import com.kbryant.retrofit.easyretrofit.RetrofitApplication;
 
+import retrofit2.Converter;
+import rx.functions.Func1;
+
 /**
  * 请求设置统一封装类
  * Created by WX on 2016/11/5.
@@ -26,37 +29,63 @@ public final class ApiSetting {
     private long cacheSize = 10 * 1024 * 1024; // 10MB
     //缓存路径
     private String cacheFile = RetrofitApplication.getContext().getCacheDir() + "/http";
+    //返回数据判断
+    private Func1 func = null;
+    //retrofit结果转换类
+    private Converter.Factory convertFactory;
+
+    public Converter.Factory getConvertFactory() {
+        return convertFactory;
+    }
+
+    public ApiSetting setConvertFactory(Converter.Factory convertFactory) {
+        this.convertFactory = convertFactory;
+        return this;
+    }
+
+    public Func1 getFunc() {
+        return func;
+    }
+
+    public ApiSetting setFunc(Func1 func) {
+        this.func = func;
+        return this;
+    }
 
     public String getCacheFile() {
         return cacheFile;
     }
 
-    public void setCacheFile(String cacheFile) {
+    public ApiSetting setCacheFile(String cacheFile) {
         this.cacheFile = cacheFile;
+        return this;
     }
 
     public long getCacheSize() {
         return cacheSize;
     }
 
-    public void setCacheSize(long cacheSize) {
+    public ApiSetting setCacheSize(long cacheSize) {
         this.cacheSize = cacheSize;
+        return this;
     }
 
     public int getCookieNoNetWorkTime() {
         return cookieNoNetWorkTime;
     }
 
-    public void setCookieNoNetWorkTime(int cookieNoNetWorkTime) {
+    public ApiSetting setCookieNoNetWorkTime(int cookieNoNetWorkTime) {
         this.cookieNoNetWorkTime = cookieNoNetWorkTime;
+        return this;
     }
 
     public int getCookieNetWorkTime() {
         return cookieNetWorkTime;
     }
 
-    public void setCookieNetWorkTime(int cookieNetWorkTime) {
+    public ApiSetting setCookieNetWorkTime(int cookieNetWorkTime) {
         this.cookieNetWorkTime = cookieNetWorkTime;
+        return this;
     }
 
 
@@ -64,16 +93,18 @@ public final class ApiSetting {
         return connectionTime;
     }
 
-    public void setConnectionTime(int connectionTime) {
+    public ApiSetting setConnectionTime(int connectionTime) {
         this.connectionTime = connectionTime;
+        return this;
     }
 
     public String getBaseUrl() {
         return baseUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
+    public ApiSetting setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+        return this;
     }
 
     public String getUrl() {
@@ -84,24 +115,27 @@ public final class ApiSetting {
         return cache;
     }
 
-    public void setCache(boolean cache) {
+    public ApiSetting setCache(boolean cache) {
         this.cache = cache;
+        return this;
     }
 
     public boolean isShowProgress() {
         return showProgress;
     }
 
-    public void setShowProgress(boolean showProgress) {
+    public ApiSetting setShowProgress(boolean showProgress) {
         this.showProgress = showProgress;
+        return this;
     }
 
     public boolean isCancel() {
         return cancel;
     }
 
-    public void setCancel(boolean cancel) {
+    public ApiSetting setCancel(boolean cancel) {
         this.cancel = cancel;
+        return this;
     }
 
 }
