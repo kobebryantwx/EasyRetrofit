@@ -64,7 +64,6 @@ public class RetrofitManager {
         }
         return retrofitBuilder
                 .client(builder.build())
-                .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(apiSetting.getBaseUrl())
                 .build();

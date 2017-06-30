@@ -17,14 +17,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * http下载处理类
@@ -41,6 +43,7 @@ public class HttpDownManager {
     private DbDownUtil db;
     //默认下载地址
     private String downloadPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+
 
     private HttpDownManager() {
         downInfos = new HashSet<>();
@@ -113,9 +116,9 @@ public class HttpDownManager {
                    /*失败后的retry配置*/
                 .retryWhen(new RetryWhenNetworkException())
                 /*读取下载写入文件*/
-                .map(new Func1<ResponseBody, DownInfo>() {
+                .map(new Function<ResponseBody, DownInfo>() {
                     @Override
-                    public DownInfo call(ResponseBody responseBody) {
+                    public DownInfo apply(@NonNull ResponseBody responseBody) throws Exception {
                         try {
                             String path = info.getSavePath();
                             if (path == null || path.isEmpty()) {
@@ -146,7 +149,7 @@ public class HttpDownManager {
         info.getListener().onStop();
         if (subMap.containsKey(info.getUrl())) {
             ProgressDownSubscriber subscriber = subMap.get(info.getUrl());
-            subscriber.unsubscribe();
+            subscriber.dispose();
             subMap.remove(info.getUrl());
         }
         /*保存数据库信息和本地文件*/
@@ -174,7 +177,7 @@ public class HttpDownManager {
         info.getListener().onPause();
         if (subMap.containsKey(info.getUrl())) {
             ProgressDownSubscriber subscriber = subMap.get(info.getUrl());
-            subscriber.unsubscribe();
+            subscriber.dispose();
             subMap.remove(info.getUrl());
         }
         /*这里需要讲info信息写入到数据中，可自由扩展，用自己项目的数据库*/

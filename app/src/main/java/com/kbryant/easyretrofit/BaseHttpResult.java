@@ -1,4 +1,4 @@
-package com.kbryant.retrofit.easyretrofit.entity;
+package com.kbryant.easyretrofit;
 
 /**
  * 回调信息统一封装类

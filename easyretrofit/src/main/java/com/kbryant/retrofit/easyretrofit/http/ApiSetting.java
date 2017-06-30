@@ -2,8 +2,8 @@ package com.kbryant.retrofit.easyretrofit.http;
 
 import com.kbryant.retrofit.easyretrofit.RetrofitApplication;
 
+import io.reactivex.functions.Function;
 import retrofit2.Converter;
-import rx.functions.Func1;
 
 /**
  * 请求设置统一封装类
@@ -30,7 +30,7 @@ public final class ApiSetting {
     //缓存路径
     private String cacheFile = RetrofitApplication.getContext().getCacheDir() + "/http";
     //返回数据判断
-    private Func1 func = null;
+    private Function func = null;
     //retrofit结果转换类
     private Converter.Factory convertFactory;
 
@@ -43,11 +43,11 @@ public final class ApiSetting {
         return this;
     }
 
-    public Func1 getFunc() {
+    public Function getFunc() {
         return func;
     }
 
-    public ApiSetting setFunc(Func1 func) {
+    public ApiSetting setFunc(Function func) {
         this.func = func;
         return this;
     }

@@ -2,11 +2,11 @@ package com.kbryant.easyretrofit.net;
 
 
 import com.kbryant.easyretrofit.BJTime;
-import com.kbryant.retrofit.easyretrofit.entity.BaseHttpResult;
+import com.kbryant.easyretrofit.BaseHttpResult;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
-import rx.Observable;
 
 /**
  * Http接口

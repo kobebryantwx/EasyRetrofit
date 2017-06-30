@@ -13,11 +13,10 @@ import com.kbryant.easyretrofit.BJTime;
 import com.kbryant.easyretrofit.net.NetManager;
 import com.kbryant.retrofit.easyretrofit.download.HttpDownManager;
 import com.kbryant.retrofit.easyretrofit.download.HttpDownOnNextListener;
-import com.kbryant.retrofit.easyretrofit.entity.BaseHttpResult;
 import com.kbryant.retrofit.easyretrofit.entity.DownInfo;
 import com.kbryant.retrofit.easyretrofit.http.HttpOnNextListener;
 import com.kbryant.retrofit.easyretrofit.utils.DbDownUtil;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 
 import java.util.List;

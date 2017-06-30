@@ -3,11 +3,10 @@ package com.kbryant.easyretrofit.net;
 
 import android.app.Activity;
 
-import com.kbryant.retrofit.easyretrofit.http.ApiSetting;
 import com.kbryant.retrofit.easyretrofit.http.HttpManager;
 import com.kbryant.retrofit.easyretrofit.http.HttpOnNextListener;
 import com.kbryant.retrofit.easyretrofit.http.RetrofitManager;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
  * 网络请求

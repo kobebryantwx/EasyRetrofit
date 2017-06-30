@@ -4,14 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ParseException;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.JsonParseException;
-import com.kbryant.retrofit.easyretrofit.entity.CookieResult;
-import com.kbryant.retrofit.easyretrofit.exception.HttpResponseException;
-import com.kbryant.retrofit.easyretrofit.utils.AppUtil;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.json.JSONException;
 
@@ -19,25 +15,29 @@ import java.lang.ref.SoftReference;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+
 
 /**
  * 用于在Http请求开始时，显示一个ProgressDialog
  * 在Http请求结束时，关闭ProgressDialog
  * Created by WX on 2016/7/16.
  */
-public class ApiSubscriber<T> extends Subscriber<T> {
+public class ApiSubscriber<T> implements Observer<T> {
     /*是否弹框*/
     private boolean showProgress = true;
     /* 软引用回调接口*/
     private SoftReference<HttpOnNextListener> mSubscriberOnNextListener;
-    /*软引用反正内存泄露*/
+    /*软引用防止内存泄露*/
     private SoftReference<RxAppCompatActivity> mActivity;
     /*加载框可自己定义*/
     private ProgressDialog pd;
     /*请求数据*/
     private ApiSetting api;
+
+    private Disposable disposable = null;
 
     /**
      * 构造
@@ -120,23 +120,6 @@ public class ApiSubscriber<T> extends Subscriber<T> {
         }
     }
 
-    /**
-     * 订阅开始时调用
-     * 显示ProgressDialog
-     */
-    @Override
-    public void onStart() {
-        showProgressDialog();
-        mSubscriberOnNextListener.get().onStart();
-    }
-
-    /**
-     * 完成，隐藏ProgressDialog
-     */
-    @Override
-    public void onCompleted() {
-        dismissProgressDialog();
-    }
 
     /**
      * 对错误进行统一处理
@@ -149,6 +132,14 @@ public class ApiSubscriber<T> extends Subscriber<T> {
         dismissProgressDialog();
 //        Log.i("error", e.getMessage());
         doError(e);
+    }
+
+    /**
+     * 完成，隐藏ProgressDialog
+     */
+    @Override
+    public void onComplete() {
+        dismissProgressDialog();
     }
 
     /*错误统一处理*/
@@ -172,6 +163,17 @@ public class ApiSubscriber<T> extends Subscriber<T> {
     }
 
     /**
+     * 订阅开始时调用
+     * 显示ProgressDialog
+     */
+    @Override
+    public void onSubscribe(@NonNull Disposable d) {
+        disposable = d;
+        showProgressDialog();
+        mSubscriberOnNextListener.get().onStart();
+    }
+
+    /**
      * 将onNext方法中的返回结果交给Activity或Fragment自己处理
      *
      * @param t 创建Subscriber时的泛型类型
@@ -187,9 +189,7 @@ public class ApiSubscriber<T> extends Subscriber<T> {
      * 取消ProgressDialog的时候，取消对observable的订阅，同时也取消了http请求
      */
     public void onCancelProgress() {
-        if (!this.isUnsubscribed()) {
-            this.unsubscribe();
-        }
+
     }
 
 
